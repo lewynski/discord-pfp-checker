@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "Discord PFP Poser Detector Pro",
+  "version": "2.1",
+  "description": "High-res Discord PFP extractor, User ID lookup, and multi-engine Pinterest reverse image checker.",
+  "permissions": [
+    "activeTab",
+    "contextMenus"
+  ],
+  "host_permissions": [
+    "https://japi.rest/*",
+    "https://discordlookup.mesalytic.moe/*",
+    "https://api.lanyard.rest/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html"
+  }
+}

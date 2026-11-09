@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    :root {
+      --bg-dark: #1e1f22;
+      --bg-card: #2b2d31;
+      --bg-input: #111214;
+      --text-main: #f2f3f5;
+      --text-muted: #949ba4;
+      --discord-blurple: #5865f2;
+      --pinterest-red: #e60023;
+      --yandex-orange: #fc3f1d;
+      --bing-blue: #00809d;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 340px;
+      font-family: "gg sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      padding: 16px;
+      margin: 0;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .header h3 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+
+    .badge {
+      background: var(--discord-blurple);
+      font-size: 10px;
+      padding: 3px 6px;
+      border-radius: 4px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .preview-card {
+      background: var(--bg-card);
+      border-radius: 8px;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+      border: 1px solid #3f4147;
+    }
+
+    .avatar-ring {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: var(--bg-input);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+      border: 2px solid var(--discord-blurple);
+    }
+
+    .avatar-ring img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
+
+    .avatar-placeholder {
+      font-size: 22px;
+      color: var(--text-muted);
+    }
+
+    .preview-info {
+      overflow: hidden;
+    }
+
+    .preview-status {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .preview-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.3;
+    }
+
+    .input-group {
+      position: relative;
+      margin-bottom: 12px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      background: var(--bg-input);
+      color: var(--text-main);
+      border: 1px solid #3f4147;
+      padding: 10px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--discord-blurple);
+    }
+
+    .options-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+    }
+
+    .options-row label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    .btn-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    button {
+      border: none;
+      padding: 10px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 12px;
+      color: white;
+      cursor: pointer;
+      transition: opacity 0.15s, transform 0.1s;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    .btn-main {
+      grid-column: span 2;
+      background: var(--pinterest-red);
+      font-size: 13px;
+    }
+
+    .btn-yandex {
+      background: var(--yandex-orange);
+    }
+
+    .btn-bing {
+      background: var(--bing-blue);
+    }
+
+    .btn-all {
+      grid-column: span 2;
+      background: var(--discord-blurple);
+      margin-top: 2px;
+    }
+
+    .error-msg {
+      color: #fa777c;
+      font-size: 11px;
+      margin-top: -6px;
+      margin-bottom: 10px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h3>PFP Poser Detector</h3>
+    <span class="badge">PRO</span>
+  </div>
+
+  <div class="preview-card">
+    <div class="avatar-ring">
+      <span class="avatar-placeholder" id="placeholderIcon">?</span>
+      <img id="imgPreview" alt="Avatar Preview" />
+    </div>
+    <div class="preview-info">
+      <div class="preview-status" id="statusText">Waiting for ID or link...</div>
+      <div class="preview-sub" id="subText">Enter a Discord User ID or paste an image URL.</div>
+    </div>
+  </div>
+
+  <div class="input-group">
+    <input type="text" id="avatarUrl" placeholder="Enter Discord User ID or paste PFP link..." />
+  </div>
+  <div class="error-msg" id="errorMsg">Please enter a valid Discord User ID or image URL first!</div>
+
+  <div class="options-row">
+    <label>
+      <input type="checkbox" id="forceHighRes" checked />
+      Auto-enhance to 1024px PNG
+    </label>
+  </div>
+
+  <div class="btn-grid">
+    <button class="btn-main" id="btnLens">🔍 Google Lens (Best for Pinterest)</button>
+    <button class="btn-yandex" id="btnYandex">Yandex (Faces/Crops)</button>
+    <button class="btn-bing" id="btnBing">Bing Visual</button>
+    <button class="btn-all" id="btnAll">🚀 Deep Scan (Open All 3 Engines)</button>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
